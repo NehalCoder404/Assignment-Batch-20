@@ -4,6 +4,9 @@ let fullName = document.getElementById('fullName')
 let userName = document.getElementById('userName')
 let password = document.getElementById('password')
 
+let allUsers = JSON.parse(localStorage.getItem('userDB')) || []
+
+
 
 function sweet(...rest) {
     // console.log(rest[0]);
@@ -31,32 +34,53 @@ function signupHandler(e) {
     if (!Email.value.trim() ||
         !fullName.value.trim() ||
         !userName.value.trim() ||
-        !password.value.trim()  
+        !password.value.trim()
     ) {
 
         return sweet('error', 'Oops', 'All Fileds Required ',
             '<a href=\"#\">Why do I have this issue?</a>')
     }
 
-    if(password.value.length < 8){
+    if (password.value.length < 8) {
         return sweet('error', 'Oops', 'Password 8 Character Required! ',
             '<a href=\"#\">Why do I have this issue?</a>')
     }
-    allUsers = []
-    
+
     let users = {
-        email : Email.value,
+        email: Email.value,
         fullName: fullName.value,
         userName: userName.value,
-        password :password.value
+        password: password.value
     }
 
 
+
+    // console.log(users);
+
+    for (var i = 0; i < allUsers.length; i++) {
+
+        if (allUsers[i].email == Email.value.trim()) {
+
+
+            return sweet('error', 'Oops', 'Email is Already Register ',
+                '<a href=\"#\">Why do I have this issue?</a>')
+        }
+
+    }
+
     allUsers.push(users)
 
-    console.log(users);
-    
-    console.log(allUsers);
-    
+    localStorage.setItem('userDB',JSON.stringify(allUsers))
+
+
+    sweet('success', 'Signup', 'Congratulations! signup successfully!')
+
+
+    setTimeout(() => {
+        window.location.href = 'login.html'
+    }, 1500)
+
+
+
 
 }
